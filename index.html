@@ -11,20 +11,25 @@ table.container {
   height: 100%;
 }
 td.board {
-  width: auto;
+  width: 50%;
   height: 100%;
   background-color: #3399ff;
 }
 .card {
   width: 90%;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 5px auto 5px auto;
+  padding: 5px 5px 5px 5px;
   text-align: center;
-  background-color: #1166aa;
+  background-color: #2277bb;
   color: #ffffff;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #2f88cc;
+  box-shadow: 5px 5px 5px #1166aa;
 }
 </style>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> -->
+<script src="./jquery/1.8.0/jquery.min.js"></script>
 <script>
 function allowDrop(e) {
   e.preventDefault();
@@ -40,16 +45,16 @@ function drop(e) {
   e.target.appendChild(document.getElementById(data));
 }
 function onLoadBody() {
-  alert("initializing");
   $(".board").each(function(i) {
-    alert("modifying board");
     this.ondrop = function(e) { drop(e); };
     this.ondragover = function(e) { allowDrop(e); };
   });
+  var cardCount = 0;
   $(".card").each(function(i) {
-    alert("modifying card");
+    this.id = "card" + cardCount.toString();
     this.draggable = true;
     this.ondragstart = function(e) { drag(e); };
+    cardCount++;
   });
 }
 </script>
@@ -61,10 +66,10 @@ function onLoadBody() {
   </tr>
   <tr>
     <td class="board">
-      <div class="card" id="div1">Move me!</div>
+      <div class="card">Move me!</div>
     </td>
     <td class="board">
-      <div class="card" id="div2">Move me too!</div>
+      <div class="card">Move me too!</div>
     </td>
   </tr>
 </table>
