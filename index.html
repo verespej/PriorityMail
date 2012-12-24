@@ -1,24 +1,70 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<style>
+html, body {
+  width: 100%;
+  height: 100%;
+}
+table.container {
+  width: 100%;
+  height: 100%;
+}
+td.board {
+  width: auto;
+  height: 100%;
+  background-color: #3399ff;
+}
+.card {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  background-color: #1166aa;
+  color: #ffffff;
+}
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
 <script>
+function allowDrop(e) {
+  e.preventDefault();
+}
+function drag(e) {
+  // Pass the recipient the id of the element
+  e.dataTransfer.setData("Text", e.target.id);
+}
+function drop(e) {
+  // Receive the id of the element and append the element to the dest
+  e.preventDefault();
+  var data = e.dataTransfer.getData("Text");
+  e.target.appendChild(document.getElementById(data));
+}
+function onLoadBody() {
+  alert("initializing");
+  $(".board").each(function(i) {
+    alert("modifying board");
+    this.ondrop = function(e) { drop(e); };
+    this.ondragover = function(e) { allowDrop(e); };
+  });
+  $(".card").each(function(i) {
+    alert("modifying card");
+    this.draggable = true;
+    this.ondragstart = function(e) { drag(e); };
+  });
+}
 </script>
 </head>
-<body>
-<table width="100%">
+<body onload="onLoadBody();">
+<table class="container">
   <tr>
     <th>Col 1</th><th>Col 2</th>
   </tr>
   <tr>
-    <td style="width: 50%; padding: 5px; text-align: center;">
-      <div id="div1" ondrop="" ondragover="" style="margin-left: auto; margin-right: auto; center; background-color: #0066aa; color: #ffffff;">
-        <div id="dragbox1" draggable="true" ondragstart="" style="text-align: center; background-color: #003366; width: 80%;">Move me!</span>
-      </div>
+    <td class="board">
+      <div class="card" id="div1">Move me!</div>
     </td>
-    <td width="50%">
-      <div id="div2" ondrop="" ondragover="" style="text-align: center;">
-        <div id="dragbox2" draggable="true" ondragstart="">Move me too!</span>
-      </div>
+    <td class="board">
+      <div class="card" id="div2">Move me too!</div>
     </td>
   </tr>
 </table>
