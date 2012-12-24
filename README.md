@@ -1,3 +1,2 @@
-PriorityMail
-For by Anupam
+PriorityMail - The super easy email
 ============
