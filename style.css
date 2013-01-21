@@ -5,6 +5,10 @@ html, body {
   padding: 0;
 }
 
+.title {
+  text-align: center;
+}
+
 table.mailbox {
   width: 100%;
   height: 100%;
@@ -30,3 +34,4 @@ div.email {
   border-radius: 7px;
   box-shadow: 5px 5px 5px #1166aa;
 }
+

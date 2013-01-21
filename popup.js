@@ -9,15 +9,35 @@ req.open(
 req.send(null);
 
 function showMails() {
-  var emails = req.responseXML.getElementsByTagName("title");
-  for (var i = 0; i < emails.length; i++) {
-    $("#unassignedEmailPile").append("<div class='email' id='email" + i + "'>" + emails[i].textContent + "</div>");
+  var titleNode = getAtomFeedNode(req.responseXML, "/atom:feed/atom:title");
+  $(".title").text(titleNode.textContent);
+
+  var emailNodes = getAtomFeedNodeIterator(req.responseXML, "/atom:feed/atom:entry/atom:title");
+  var count = 0;
+  while (email = emailNodes.iterateNext()) {
+    $("#unassignedEmailPile").append(
+      "<div class='email' id='email" + count++ + "'>" + email.textContent + "</div>"
+      );
   }
 
   $(".email").each(function(i) {
     this.draggable = true;
     this.ondragstart = function(e) { drag(e); };
   });
+}
+
+var atomNsResolver = function(prefix) { return "http://purl.org/atom/ns#"; };
+
+function getAtomFeedNode(xmlDoc, path) {
+  return xmlDoc.evaluate(
+    path, xmlDoc, atomNsResolver, XPathResult.ANY_UNORDERED_NODE_TYPE, null
+    ).singleNodeValue;
+}
+
+function getAtomFeedNodeIterator(xmlDoc, path) {
+  return xmlDoc.evaluate(
+    path, xmlDoc, atomNsResolver, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null
+    );
 }
 
 function allowDrop(e) {
