@@ -1,20 +1,18 @@
+//Fire a request to Gmail RSS feed
 var req = new XMLHttpRequest();
 var data = "not yet";
 req.open(
     "GET",
     "https://mail.google.com/mail/feed/atom",
     true);
-req.onload = showPhotos;
+req.onload = showMails;
 req.send(null);
 
-function showPhotos() {
-  var photos = req.responseXML.getElementsByTagName("title");
+function showMails() {
+  var allEmailsInFeed = req.responseXML.getElementsByTagName("title");
 
-  
-  for (var i = 0, photo; photo = photos[i]; i++) {
-
-  $('#masterDiv').append('<div class="card">' + photo.textContent + '</div>');
-   
+  for (var i = 0; email = allEmailsInFeed[i]; i++) {
+	$('#masterDiv').append('<div class="card">' + email.textContent + '</div>');
   }
   refreshCards();
 }
@@ -24,7 +22,6 @@ function allowDrop(e) {
 }
 function drag(e) {
   e.dataTransfer.setData("Text", e.target.id);
-   
 }
 function drop(e) {
   // Receive the id of the element and append the element to the dest
@@ -53,5 +50,3 @@ function refreshCards() {
   });
 
 }
-
-
